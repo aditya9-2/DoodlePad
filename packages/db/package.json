@@ -14,7 +14,9 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "6.4.1",
-    "@repo/typescript-config": "workspace:*",
     "prisma": "^6.4.1"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*"
   }
 }
