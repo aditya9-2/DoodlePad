@@ -1,5 +1,6 @@
 import { NextFunction, Response, Request } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { JWT_SECRET } from "@repo/configs/config"
 
 
 export interface CustomRequest extends Request {
@@ -21,7 +22,7 @@ const userAuth = (req: CustomRequest, res: Response, next: NextFunction) => {
             return
         }
 
-        const decode = jwt.verify(token, process.env.JWT_SECRET as string)
+        const decode = jwt.verify(token, JWT_SECRET)
 
         if (!decode) {
             res.status(401).json({
