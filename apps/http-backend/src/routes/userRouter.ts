@@ -2,12 +2,13 @@ import express, { Router } from "express";
 import signup from "../controllers/signup.controller";
 import signin from "../controllers/signin.controller";
 import room from "../controllers/room.controller";
+import userAuth from "../middleware/authMiddleware";
 
 
 const router: Router = express.Router();
 router.post("/signup", signup);
 router.post("/signin", signin);
-router.post("/room", room);
+router.post("/room", userAuth, room);
 
 
 
