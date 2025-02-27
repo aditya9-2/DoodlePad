@@ -12,12 +12,15 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@repo/common": "workspace:*",
+    "@repo/db": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@repo/common" : "workspace:*"
+    "@repo/configs": "workspace:*"
   },
   "dependencies": {
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.9",
+    "bcryptjs": "^3.0.2",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2"
   }
