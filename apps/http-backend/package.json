@@ -13,14 +13,16 @@
   "description": "",
   "devDependencies": {
     "@repo/common": "workspace:*",
+    "@repo/configs": "workspace:*",
     "@repo/db": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@repo/configs": "workspace:*"
+    "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.9",
     "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2"
   }
