@@ -46,13 +46,13 @@ const AuthPage = ({ isSignin }: AuthProp) => {
                     duration: 1500,
                     style: { backgroundColor: "green", color: "white" },
                 });
-
-                if (isSignin) {
-                    router.push("/dashboard");
-                } else {
-                    router.push("/signin");
-                }
             }
+
+            if (isSignin && data.token) {
+                localStorage.setItem("authToken", data?.token);
+            }
+
+            router.push(isSignin ? "/dashboard" : "/signin");
         } catch (err) {
             toast.error("Authentication failed!", {
                 position: "bottom-right",
