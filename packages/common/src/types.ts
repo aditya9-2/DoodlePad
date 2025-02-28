@@ -4,7 +4,7 @@ export const signupSchema = z.object({
     name: z.string().min(3).max(30),
     username: z.string().min(3).max(20),
     password: z.string().min(6).max(20),
-    photo: z.string()
+    photo: z.string().optional()
 });
 
 export const signinSchema = z.object({
