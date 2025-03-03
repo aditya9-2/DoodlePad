@@ -51,13 +51,21 @@ export const initDraw = async (canvas: HTMLCanvasElement, roomId: string, socket
     if (!socket) return;
 
     socket.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-        if (message.type === "chat") {
-            const parsedShape = JSON.parse(message.message)
-            existingShapes.push(parsedShape);
-            clearShapes(existingShapes, canvas, ctx);
+        try {
 
+            const message = JSON.parse(event.data);
+            if (message.type === "chat") {
+                const parsedShape = JSON.parse(message.message)
+                existingShapes.push(parsedShape);
+                clearShapes(existingShapes, canvas, ctx);
+            } else if (message.type === "error") {
+                console.error("Server error:", message.message);
+            }
+
+        } catch (error) {
+            console.error("Error processing message:", error, event.data);
         }
+
     }
 
 
@@ -90,7 +98,7 @@ export const initDraw = async (canvas: HTMLCanvasElement, roomId: string, socket
 
         socket.send(JSON.stringify({
             type: "chat",
-            message: JSON.stringify({ shape }),
+            message: JSON.stringify(shape),
             roomId
         }));
     });
