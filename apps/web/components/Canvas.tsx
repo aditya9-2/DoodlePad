@@ -1,22 +1,21 @@
 import { initDraw } from "@/app/draw";
 import { useEffect, useRef } from "react";
 
-const MainCanvas = ({ roomId, socket }: {
+export function Canvas({
+    roomId,
+    socket
+}: {
     roomId: string,
     socket: WebSocket
-}) => {
-
+}) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
 
         if (canvasRef.current) {
-
-            const canvas = canvasRef.current;
-            initDraw(canvas, roomId, socket);
-
+            initDraw(canvasRef.current, roomId, socket)
         }
-    }, [canvasRef, roomId, socket]);
+    })
 
     return (
         <div>
@@ -24,5 +23,3 @@ const MainCanvas = ({ roomId, socket }: {
         </div>
     )
 }
-
-export default MainCanvas

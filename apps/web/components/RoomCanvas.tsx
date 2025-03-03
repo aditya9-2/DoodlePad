@@ -1,17 +1,18 @@
 "use client"
 
 import { toast } from "sonner";
-import MainCanvas from "./Canvas"
 import { useEffect, useState } from "react";
+import { Canvas } from "./Canvas";
 
-export function Canvas({ roomId }: { roomId: string }) {
+
+export function RoomCanvas({ roomId }: { roomId: string }) {
 
     const [socket, setSocket] = useState<WebSocket | null>(null);
 
     useEffect(() => {
 
         const token = localStorage.getItem("authToken");
-        console.log(`token: ${token}`);
+
         if (!token) {
 
             toast.error("Token not found", {
@@ -21,14 +22,13 @@ export function Canvas({ roomId }: { roomId: string }) {
             });
             return;
         }
-        const socketString = process.env.NEXT_PUBLIC_SOCKET_URL as string
+        const socketString = process.env.NEXT_PUBLIC_SOCKET_URL!
 
         const ws = new WebSocket(`${socketString}?token=${token}`);
 
         console.log(JSON.stringify(ws))
 
         ws.onopen = () => {
-
             setSocket(ws);
 
             ws.send(JSON.stringify({
@@ -41,15 +41,15 @@ export function Canvas({ roomId }: { roomId: string }) {
 
 
     if (!socket) {
-        return <div>
-            connecting to server...
+        return <div className="h-screen w-full flex justify-center items-center">
+            <p className="text-xl">connecting to server...</p>
         </div>
     }
 
 
     return (
         <div>
-            <MainCanvas roomId={roomId} socket={socket} />
+            <Canvas roomId={roomId} socket={socket} />
         </div>
     )
 
