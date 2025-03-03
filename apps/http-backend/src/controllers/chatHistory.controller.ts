@@ -4,10 +4,6 @@ import { Request, Response } from "express"
 
 const chatHistory = async (req: Request, res: Response) => {
 
-    console.log("chatHistory controller called");
-    console.log("roomId:", req.params.roomId);
-
-
     try {
         const roomId = Number(req.params.roomId);
 
