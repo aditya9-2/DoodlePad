@@ -43,13 +43,21 @@ wss.on('connection', function connection(ws, req) {
         return;
     }
 
+    // const existingUser = users.find(user => user.userId === userId);
+
     users.push({
         userId,
         rooms: [],
         ws
-    })
+    });
+
+    // if (!existingUser) {
+
+    // }
+
 
     ws.on('message', async function message(data: string | Buffer) {
+        // console.log(data)
         try {
             // Parse the string data into JSON data
             let parsedData = JSON.parse(data.toString());
@@ -76,10 +84,10 @@ wss.on('connection', function connection(ws, req) {
                 const roomId = parsedData.roomId;
                 const message = parsedData.message;
 
-                await prismaClient.chat.create({
+                const response = await prismaClient.chat.create({
                     data: {
                         userId,
-                        roomId,
+                        roomId: Number(roomId),
                         message
                     }
                 });
@@ -89,7 +97,7 @@ wss.on('connection', function connection(ws, req) {
                     if (user.rooms.includes(roomId)) {
                         user.ws.send(JSON.stringify({
                             type: "chat",
-                            message: message,
+                            message,
                             roomId
                         }));
                     }

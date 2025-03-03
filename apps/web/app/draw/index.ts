@@ -45,6 +45,7 @@ export const initDraw = async (canvas: HTMLCanvasElement, roomId: string, socket
 
     const ctx = canvas.getContext("2d");
     const existingShapes: canvasShapes[] = await getExisingCanvas(roomId);
+    console.log(`shapes: ${JSON.stringify(existingShapes)}`);
 
 
     if (!ctx) return;
@@ -56,7 +57,7 @@ export const initDraw = async (canvas: HTMLCanvasElement, roomId: string, socket
             const message = JSON.parse(event.data);
             if (message.type === "chat") {
                 const parsedShape = JSON.parse(message.message)
-                existingShapes.push(parsedShape);
+                existingShapes.push(parsedShape.shape);
                 clearShapes(existingShapes, canvas, ctx);
             } else if (message.type === "error") {
                 console.error("Server error:", message.message);
@@ -98,7 +99,7 @@ export const initDraw = async (canvas: HTMLCanvasElement, roomId: string, socket
 
         socket.send(JSON.stringify({
             type: "chat",
-            message: JSON.stringify(shape),
+            message: JSON.stringify({ shape }),
             roomId
         }));
     });
@@ -152,7 +153,7 @@ const getExisingCanvas = async (roomId: string) => {
 
     const shapes = messages.map((shape: { message: string }) => {
         const messageData = JSON.parse(shape.message);
-        return messageData;
+        return messageData.shape;
     });
     return shapes;
 
