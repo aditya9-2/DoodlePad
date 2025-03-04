@@ -26,8 +26,6 @@ export function RoomCanvas({ roomId }: { roomId: string }) {
 
         const ws = new WebSocket(`${socketString}?token=${token}`);
 
-        console.log(JSON.stringify(ws))
-
         ws.onopen = () => {
             setSocket(ws);
 
