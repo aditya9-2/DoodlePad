@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { initDraw } from "@/app/draw";
 import { useEffect, useRef, useState } from "react";
 import IconButton from "./IconButton";
@@ -40,16 +41,24 @@ export function Canvas({
         return () => window.removeEventListener("resize", updateSize);
     });
 
+    useEffect(() => {
+
+        // @ts-ignore
+        window.selectedTool = selectedTool
+    }, [selectedTool])
+
 
     return (
-        <div className="h-screen overflow-hidden">
-            <IconTopBar selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
-            <canvas
-                ref={canvasRef}
-                width={dimentions.width}
-                height={dimentions.height}
-            ></canvas>
-        </div>
+        <>
+            <div className="h-screen overflow-hidden">
+                <IconTopBar selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
+                <canvas
+                    ref={canvasRef}
+                    width={dimentions.width}
+                    height={dimentions.height}
+                ></canvas>
+            </div>
+        </>
     )
 }
 
