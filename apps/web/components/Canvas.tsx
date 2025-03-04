@@ -1,5 +1,5 @@
 import { initDraw } from "@/app/draw";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function Canvas({
     roomId,
@@ -9,17 +9,40 @@ export function Canvas({
     socket: WebSocket
 }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [dimentions, setDimentions] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight
+    });
+
+
+    const updateSize = () => {
+        setDimentions({
+            width: window.innerWidth,
+            height: window.innerHeight
+        });
+    }
 
     useEffect(() => {
 
         if (canvasRef.current) {
             initDraw(canvasRef.current, roomId, socket)
         }
-    })
+    }, [dimentions, roomId, socket]);
+
+    useEffect(() => {
+        window.addEventListener("resize", updateSize);
+
+        return () => window.removeEventListener("resize", updateSize);
+    });
+
 
     return (
-        <div>
-            <canvas ref={canvasRef} width={1920} height={1080}></canvas>
+        <div className="h-screen overflow-hidden">
+            <canvas
+                ref={canvasRef}
+                width={dimentions.width}
+                height={dimentions.height}
+            ></canvas>
         </div>
     )
 }
