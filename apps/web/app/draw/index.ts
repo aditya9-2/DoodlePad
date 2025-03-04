@@ -1,17 +1,24 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import axios from "axios";
 
 
 type canvasShapes = {
-    type: "rect",
-    width: number,
-    height: number,
+    type: "rect";
+    width: number;
+    height: number;
     X: number;
     Y: number;
 } | {
-    type: "circle",
+    type: "circle";
     centerX: number;
     centerY: number;
-    radius: number
+    radius: number;
+} | {
+    type: "pencil";
+    startX: number;
+    startY: number;
+    endX: number;
+    endY: number;
 }
 
 
@@ -87,13 +94,32 @@ export const initDraw = async (canvas: HTMLCanvasElement, roomId: string, socket
         const width = e.clientX - startX;
         const height = e.clientY - startY;
 
-        const shape: canvasShapes = {
-            type: "rect",
-            width: width,
-            height: height,
-            X: startX,
-            Y: startY
+        // @ts-ignore
+        const selectedTool = window.selectedTool;
+        let shape: canvasShapes | null = null;
+
+        if (selectedTool === "rect") {
+            shape = {
+                type: "rect",
+                width: width,
+                height: height,
+                X: startX,
+                Y: startY
+            }
+        } else if (selectedTool === "circle") {
+            const radius = Math.max(width, height) / 2;
+            shape = {
+                type: "circle",
+                centerX: startX + radius,
+                centerY: startY + radius,
+                radius: radius
+            }
+
+        } else if (selectedTool === "pencil") {
+            // Todo: logic to add pencil shape
         }
+
+        if (!shape) return;
 
         existingShapes.push(shape);
 
@@ -111,9 +137,30 @@ export const initDraw = async (canvas: HTMLCanvasElement, roomId: string, socket
             const width = e.clientX - startX;
             const height = e.clientY - startY;
             clearShapes(existingShapes, canvas, ctx);
-
             ctx.strokeStyle = "rgba(255,255,255)";
-            ctx?.strokeRect(startX, startY, width, height)
+
+            // @ts-ignore
+            const selectedTool = window.selectedTool;
+
+            if (selectedTool === "rect") {
+
+                ctx?.strokeRect(startX, startY, width, height);
+
+            } else if (selectedTool === "circle") {
+
+                const radius = Math.max(width, height) / 2;
+                const centerX = startX + radius;
+                const centerY = startY + radius;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.closePath();
+
+            } else if (selectedTool === "pencil") {
+                // add pencil
+
+            }
+
 
         }
     });
@@ -130,6 +177,11 @@ const clearShapes = (existingShapes: canvasShapes[], canvas: HTMLCanvasElement, 
             ctx.strokeStyle = "rgba(255,255,255)";
             ctx?.strokeRect(shape.X, shape.Y, shape.width, shape.height)
 
+        } else if (shape.type === "circle") {
+            ctx.beginPath();
+            ctx.arc(shape.centerX, shape.centerY, shape.radius, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.closePath();
         }
     })
 
