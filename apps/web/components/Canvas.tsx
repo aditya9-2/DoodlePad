@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import { initDraw } from "@/app/draw";
 import { useEffect, useRef, useState } from "react";
 import IconButton from "./IconButton";
 import { Circle, Pencil, RectangleHorizontalIcon, } from "lucide-react";
+import { Tools } from "@/app/draw/types";
+import { Draw } from "@/app/draw/Draw";
 
-type shape = "circle" | "rect" | "pencil";
 
 export function Canvas({
     roomId,
@@ -14,15 +13,16 @@ export function Canvas({
     socket: WebSocket
 }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [dimentions, setDimentions] = useState({
+    const [dimensions, setDimensions] = useState({
         width: window.innerWidth,
         height: window.innerHeight
     });
-    const [selectedTool, setSelectedTool] = useState<shape>("circle")
+    const [draw, setDraw] = useState<Draw>()
+    const [selectedTool, setSelectedTool] = useState<Tools>("circle")
 
 
     const updateSize = () => {
-        setDimentions({
+        setDimensions({
             width: window.innerWidth,
             height: window.innerHeight
         });
@@ -30,22 +30,31 @@ export function Canvas({
 
     useEffect(() => {
 
+        if (!draw) { return; }
+        draw?.setTool(selectedTool);
+
+
+    }, [selectedTool, draw])
+
+    useEffect(() => {
+
         if (canvasRef.current) {
-            initDraw(canvasRef.current, roomId, socket)
+
+            const d = new Draw(canvasRef.current, roomId, socket);
+            setDraw(d);
+
+            return () => {
+                d.destroy();
+            }
         }
-    }, [dimentions, roomId, socket]);
+
+    }, [dimensions, roomId, socket]);
 
     useEffect(() => {
         window.addEventListener("resize", updateSize);
 
         return () => window.removeEventListener("resize", updateSize);
-    });
-
-    useEffect(() => {
-
-        // @ts-ignore
-        window.selectedTool = selectedTool
-    }, [selectedTool])
+    }, []);
 
 
     return (
@@ -54,8 +63,8 @@ export function Canvas({
                 <IconTopBar selectedTool={selectedTool} setSelectedTool={setSelectedTool} />
                 <canvas
                     ref={canvasRef}
-                    width={dimentions.width}
-                    height={dimentions.height}
+                    width={dimensions.width}
+                    height={dimensions.height}
                 ></canvas>
             </div>
         </>
@@ -63,8 +72,8 @@ export function Canvas({
 }
 
 function IconTopBar({ selectedTool, setSelectedTool }: {
-    selectedTool: shape;
-    setSelectedTool: (s: shape) => void;
+    selectedTool: Tools;
+    setSelectedTool: (s: Tools) => void;
 }) {
     return (
         <div className="w-44 h-14 md:w-96 bg-slate-600 text-white fixed top-3 left-28 md:left-[36rem] rounded-md py-2">
