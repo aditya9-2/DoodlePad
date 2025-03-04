@@ -21,7 +21,6 @@ const chatHistory = async (req: Request, res: Response) => {
             orderBy: {
                 id: "desc"
             },
-            take: 50
         });
 
         res.status(200).json({
