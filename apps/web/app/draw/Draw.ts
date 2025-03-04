@@ -26,16 +26,18 @@ export class Draw {
         this.initMouseHandlers();
     }
 
-    async init() {
-        this.existingShapes = await getExisingCanvas(this.roomId);
-        this.clearShapes();
-    }
-
     destroy() {
         this.canvas.removeEventListener("mousedown", this.mouseDownHandler);
         this.canvas.removeEventListener("mouseup", this.mouseUpHandler);
         this.canvas.removeEventListener("mousemove", this.mouseMoveHandler);
     }
+
+    async init() {
+        this.existingShapes = await getExisingCanvas(this.roomId);
+        this.clearShapes();
+    }
+
+
 
     initHandlers() {
         this.socket.onmessage = (event) => {
@@ -79,7 +81,6 @@ export class Draw {
     }
 
     setTool(tool: Tools) {
-        console.log("Tool changed to:", tool);
         this.selectedTool = tool
     }
 
@@ -136,7 +137,6 @@ export class Draw {
             this.clearShapes();
             this.ctx.strokeStyle = "rgba(255, 255, 255)"
             const selectedTool = this.selectedTool;
-            console.log(selectedTool)
             if (selectedTool === "rect") {
                 this.ctx.strokeRect(this.startX, this.startY, width, height);
             } else if (selectedTool === "circle") {
@@ -158,88 +158,4 @@ export class Draw {
         this.canvas.addEventListener("mousemove", this.mouseMoveHandler);
     }
 
-
-    // initMouseHandlers() {
-
-    //     this.canvas.addEventListener("mousedown", (e) => {
-    //         this.clicked = true;
-    //         this.startX = e.clientX;
-    //         this.startY = e.clientY
-    //     });
-
-    //     this.canvas.addEventListener("mouseup", (e) => {
-    //         this.clicked = false;
-    //         const width = e.clientX - this.startX;
-    //         const height = e.clientY - this.startY;
-
-    //         const selectedTool = this.selectedTool;
-    //         let shape: canvasShapes | null = null;
-
-
-
-    //         if (selectedTool === "rect") {
-    //             shape = {
-    //                 type: "rect",
-    //                 width: width,
-    //                 height: height,
-    //                 X: this.startX,
-    //                 Y: this.startY
-    //             }
-    //         } else if (selectedTool === "circle") {
-    //             const radius = Math.max(width, height) / 2;
-    //             shape = {
-    //                 type: "circle",
-    //                 centerX: this.startX + radius,
-    //                 centerY: this.startY + radius,
-    //                 radius: radius
-    //             }
-
-    //         } else if (selectedTool === "pencil") {
-    //             // Todo: logic to add pencil shape
-    //         }
-
-    //         if (!shape) return;
-
-    //         this.existingShapes.push(shape);
-
-    //         this.socket.send(JSON.stringify({
-    //             type: "chat",
-    //             message: JSON.stringify({ shape }),
-    //             roomId: this.roomId
-    //         }));
-    //     });
-
-    //     this.canvas.addEventListener("mousemove", (e) => {
-
-    //         if (this.clicked) {
-
-    //             const width = e.clientX - this.startX;
-    //             const height = e.clientY - this.startY;
-    //             this.clearShapes();
-    //             this.ctx.strokeStyle = "rgba(255,255,255)";
-
-    //             const selectedTool = this.selectedTool;
-
-    //             if (selectedTool === "rect") {
-
-    //                 this.ctx?.strokeRect(this.startX, this.startY, width, height);
-
-    //             } else if (selectedTool === "circle") {
-
-    //                 const radius = Math.max(width, height) / 2;
-    //                 const centerX = this.startX + radius;
-    //                 const centerY = this.startY + radius;
-    //                 this.ctx.beginPath();
-    //                 this.ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    //                 this.ctx.stroke();
-    //                 this.ctx.closePath();
-
-    //             } else if (selectedTool === "pencil") {
-    //                 // add pencil
-
-    //             }
-
-    //         }
-    //     });
-    // }
 }
