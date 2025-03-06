@@ -89,7 +89,7 @@
   }
   
   .highlight-text::after {
-    @apply content-[''] absolute bottom-0 left-0 w-full h-[30%] bg-primary/10 dark:bg-primary/20 -z-10 rounded-sm;
+    @apply content-[''] absolute bottom-0 left-0 w-full h-[30%] bg-blue-400 dark:bg-blue-500 -z-10 rounded-sm;
   }
   
   .nav-link {
