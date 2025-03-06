@@ -44,10 +44,7 @@ const Hero = () => {
                                     <div className="w-3 h-3 rounded-full bg-amber-400"></div>
                                     <div className="w-3 h-3 rounded-full bg-green-400"></div>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="h-6 w-28 bg-secondary rounded-md"></div>
-                                    <div className="h-6 w-28 bg-secondary rounded-md"></div>
-                                </div>
+
                                 <div className="flex items-center gap-2">
                                     <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-medium">JD</div>
                                     <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-medium">SK</div>
