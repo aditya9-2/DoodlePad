@@ -30,9 +30,6 @@ const Hero = () => {
                                 Start Creating <ArrowRight className="h-4 w-4" />
                             </Link>
                         </Button>
-                        <Button variant="outline" size="lg" className="rounded-full px-6 py-6 text-base">
-                            Watch Demo
-                        </Button>
                     </div>
                 </div>
 
