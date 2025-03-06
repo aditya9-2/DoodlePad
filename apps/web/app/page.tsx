@@ -7,11 +7,13 @@ import Features from "@/components/Features"
 import CanvasDemo from "@/components/CanvasDemo"
 import Footer from "@/components/Footer"
 
+
 export default function Home() {
   return (
     <div className="min-h-screen w-full">
       {/* Navigation */}
       <NavBar />
+
 
       {/* Hero Section */}
       <Hero />
