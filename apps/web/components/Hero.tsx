@@ -11,7 +11,7 @@ const Hero = () => {
         <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
             <Spotlight
                 className="-top-40 left-0 md:left-60 md:-top-20"
-                fill="blue"
+                fill="gray"
             />
             {/* Background decorative elements */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-secondary/50 dark:bg-secondary/20 rounded-full blur-3xl opacity-50 -z-10"></div>
