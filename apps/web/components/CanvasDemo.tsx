@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client"
 
 import React from 'react'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
+import * as LucidIcons from 'lucide-react';
 
 const CanvasDemo = () => {
     return (
@@ -15,9 +17,20 @@ const CanvasDemo = () => {
                             <div className="aspect-[4/3] bg-secondary/30 relative overflow-hidden">
                                 {/* Canvas Tools */}
                                 <div className="absolute left-0 top-0 bottom-0 w-12 bg-card border-r border-border flex flex-col items-center py-4 gap-4">
-                                    {[1, 2, 3, 4, 5].map((_, i) => (
-                                        <div key={i} className="w-8 h-8 rounded-md bg-secondary/80"></div>
-                                    ))}
+                                    {[
+                                        "PencilIcon",
+                                        "EraserIcon",
+                                        "ShapesIcon",
+                                        "TextIcon",
+                                        "UndoIcon"
+                                    ].map((IconName, i) => {
+                                        return (
+                                            <div key={i} className="w-8 h-8 rounded-md bg-secondary/80 flex items-center justify-center">
+                                                {/* @ts-ignore */}
+                                                {React.createElement(LucidIcons[IconName as keyof typeof LucidIcons], { className: "w-5 h-5 text-primary" })}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
 
                                 {/* Canvas Content */}
@@ -34,7 +47,7 @@ const CanvasDemo = () => {
                                         <div className="absolute top-2/3 right-1/4 w-32 h-16 bg-primary/10 rounded-md border border-primary/30 flex items-center justify-center">
                                             <span className="text-sm font-medium">Development</span>
                                         </div>
-                                        <div className="absolute bottom-0 left-1/3 w-32 h-16 bg-primary/10 rounded-md border border-primary/30 flex items-center justify-center">
+                                        <div className="absolute top-[18rem] left-1/4 w-32 h-16 bg-primary/10 rounded-md border border-primary/30 flex items-center justify-center">
                                             <span className="text-sm font-medium">Feedback</span>
                                         </div>
 
@@ -42,7 +55,6 @@ const CanvasDemo = () => {
                                         <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M120,40 L200,120" stroke="currentColor" strokeWidth="1.5" fill="none" markerEnd="url(#arrowhead)" />
                                             <path d="M250,140 L280,200" stroke="currentColor" strokeWidth="1.5" fill="none" markerEnd="url(#arrowhead)" />
-                                            <path d="M240,220 L150,240" stroke="currentColor" strokeWidth="1.5" fill="none" markerEnd="url(#arrowhead)" />
                                             <path d="M130,250 L100,80" stroke="currentColor" strokeWidth="1.5" fill="none" markerEnd="url(#arrowhead)" />
                                             <defs>
                                                 <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
@@ -52,12 +64,6 @@ const CanvasDemo = () => {
                                         </svg>
                                     </div>
 
-                                    {/* Cursor animation */}
-                                    <div className="absolute w-5 h-5 animate-float" style={{ top: '40%', left: '60%', animationDelay: '0.5s' }}>
-                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M5.29289 1.29289C5.47386 1.11193 5.72386 1.01866 5.97121 1.04466C6.21856 1.07066 6.44293 1.21587 6.58579 1.43934L15.5858 15.4393C15.7401 15.6822 15.7703 15.9809 15.6678 16.2481C15.5652 16.5153 15.341 16.7223 15.0682 16.8023L11.0682 17.8023C10.752 17.8939 10.4126 17.8418 10.1382 17.6624C9.86387 17.4829 9.68491 17.1968 9.65811 16.8813L9.00811 9.03131L2.43934 2.46254C2.24777 2.27097 2.14583 2.01068 2.16061 1.74582C2.1754 1.48095 2.30564 1.23456 2.51823 1.06479C2.73083 0.895014 3.00386 0.822906 3.2697 0.866345L9.2697 1.86635C9.53339 1.90953 9.76802 2.05556 9.92455 2.27012L5.29289 1.29289Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </div>
                                 </div>
 
                                 {/* Users */}
