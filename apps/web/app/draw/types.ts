@@ -16,11 +16,17 @@ export type canvasShapes = {
     endX: number;
     endY: number;
 } | {
-    type: "line",
+    type: "line";
+    startX: number;
+    startY: number;
+    endX: number;
+    endY: number;
+} | {
+    type: "arrow";
     startX: number;
     startY: number;
     endX: number;
     endY: number;
 }
 
-export type Tools = "circle" | "rect" | "pencil" | "line";
+export type Tools = "circle" | "rect" | "pencil" | "line" | "arrow";
