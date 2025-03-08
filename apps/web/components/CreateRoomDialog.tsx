@@ -17,6 +17,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast, Toaster } from 'sonner';
+import { useCanvasStore } from "@/store/atoms/useCanvasStore";
+
+
 
 export default function CreateRoomDialog() {
     const [roomName, setRoomName] = useState("");
@@ -24,6 +27,7 @@ export default function CreateRoomDialog() {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const addCanvas = useCanvasStore((state) => state.addCanvas);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -42,11 +46,17 @@ export default function CreateRoomDialog() {
             );
 
             const data = response.data;
-            console.log(data)
+
 
             if (response.status !== 201) {
                 throw new Error(data.message || "Failed to create room");
             }
+            addCanvas({
+                id: data.roomId,
+                title: roomName,
+                description: description || "New collaborative workspace.",
+                link: `/canvas/${data.roomId}`,
+            });
 
             setIsOpen(false);
             router.push(`/canvas/${data.roomId}`);

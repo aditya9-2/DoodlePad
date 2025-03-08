@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client"
 import React from 'react';
 import { motion } from 'framer-motion';
@@ -5,31 +6,44 @@ import NavBar from '@/components/NavBar';
 import FooterSpotlight from '@/components/FooterSpotlight';
 import CreateRoomDialog from '@/components/CreateRoomDialog';
 import { HoverEffect } from '@/components/ui/card-hover-effect';
-import { BackgroundBeams } from '@/components/ui/background-beams';
+// import { BackgroundBeams } from '@/components/ui/background-beams';
+import { useCanvasStore } from "@/store/atoms/useCanvasStore"
+import { useEffect } from 'react';
+import axios from 'axios';
+import { Skeleton } from "@/components/ui/skeleton"
+import { useState } from 'react';
 
 const Dashboard = () => {
+    const [loading, setLoading] = useState(true);
+    const canvases = useCanvasStore((state) => state.canvases);
+    const setCanvases = useCanvasStore((state) => state.setCanvases);
+    useEffect(() => {
+        const fetchCanvases = async () => {
+            const token = localStorage.getItem("authToken");
+            try {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_HTTP_URL}/api/v1/user/all-rooms`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
 
+                // @ts-ignore
+                const rooms = response.data.map((room) => ({
+                    id: room.id,
+                    title: room.slug,
+                    description: room.slug,
+                    link: `/canvas/${room.id}`,
+                }));
+                setCanvases(rooms);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching rooms:", error);
+                setLoading(false);
+            }
+        };
 
-    const canvases = [
-        {
-            id: '1',
-            title: 'Physics Drawing',
-            description: 'Explore visualizations for mechanics, waves, and thermodynamics. Tap to start creating.',
-            link: '/canvas/1'
-        },
-        {
-            id: '2',
-            title: 'Chemistry Drawing',
-            description: 'Create molecular structures, chemical reactions, and lab setups with precision tools.',
-            link: '/canvas/2'
-        },
-        {
-            id: '3',
-            title: 'Computer Architecture',
-            description: 'Design circuit diagrams, memory layouts, and system flowcharts with specialized tools.',
-            link: '/canvas/3'
-        },
-    ];
+        fetchCanvases();
+    }, [setCanvases]);
 
 
     return (
@@ -55,19 +69,29 @@ const Dashboard = () => {
                                 Continue working on your canvases or create something new. Your creativity has no bounds.
                             </p>
                         </div>
+                        <div className='cursor-pointer'>
 
+                        </div>
                         <CreateRoomDialog />
-
                     </motion.div>
                 </section>
 
                 <section>
-                    <HoverEffect items={canvases} />
+                    {loading ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                            {/* Shadcn Skeleton loader */}
+                            {[...Array(3)].map((_, index) => (
+                                <Skeleton key={index} className="h-48 rounded-lg" />
+                            ))}
+                        </div>
+                    ) : (
+                        <HoverEffect items={canvases} />
+                    )}
                 </section>
 
 
             </main>
-            <BackgroundBeams />
+            {/* <BackgroundBeams /> */}
             <FooterSpotlight />
         </div>
     );
