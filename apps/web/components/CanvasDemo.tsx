@@ -98,7 +98,7 @@ const CanvasDemo = () => {
                             ))}
                         </ul>
                         <Button className="rounded-full px-6" asChild>
-                            <Link href="/signup">Start Collaborating</Link>
+                            <Link href="/signin">Start Collaborating</Link>
                         </Button>
                     </div>
                 </div>

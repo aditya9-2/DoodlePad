@@ -20,12 +20,12 @@ const Footer = () => {
                         <p className="text-muted-foreground text-sm mb-4">
                             Creating the best collaborative experience for teams to visualize ideas together.
                         </p>
-                        <div className="flex items-center gap-2">
+                        {/* <div className="flex items-center gap-2">
                             <ThemeToggle />
                             <span className="text-sm text-muted-foreground">
                                 {new Date().getFullYear()} DoodlePad
                             </span>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Links */}
