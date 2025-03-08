@@ -3,8 +3,8 @@ import { WobbleCard } from "@/components/ui/wobble-card"
 export function CTASection() {
     return (
         <section className="py-20">
-            <div className="container mx-auto px-4 max-w-6xl">
-                <WobbleCard containerClassName="bg-gradient-to-br from-secondary to-secondary/50 rounded-2xl p-10 md:p-16 text-center relative overflow-hidden">
+            <div className="mx-auto px-4 max-w-6xl">
+                <WobbleCard containerClassName="bg-gradient-to-br from-secondary to-secondary/50 rounded-2xl  text-center relative overflow-hidden">
                     {/* Decorative circles */}
                     <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/5 rounded-full"></div>
                     <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-primary/5 rounded-full"></div>
