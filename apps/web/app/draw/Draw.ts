@@ -11,6 +11,7 @@ export class Draw {
     private startX: number = 0;
     private startY: number = 0;
     private selectedTool: Tools = "circle"
+    private pencilPath: { x: number, y: number }[] = [] // Stores all points for freehand drawing
     socket: WebSocket
 
     constructor(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket) {
@@ -88,6 +89,18 @@ export class Draw {
                 this.ctx.stroke();
                 this.drawArrowHead(shape.startX, shape.startY, shape.endX, shape.endY);
 
+            } else if (shape.type === "pencil") {
+                this.ctx.moveTo(shape.path[0].x, shape.path[0].y);
+                this.ctx.beginPath();
+
+                shape.path.forEach((point, index) => {
+                    if (index > 0) {
+                        this.ctx.lineTo(point.x, point.y);
+                    }
+                });
+
+                this.ctx.stroke();
+                this.ctx.closePath();
             }
         })
 
@@ -120,6 +133,14 @@ export class Draw {
         this.clicked = true
         this.startX = e.clientX
         this.startY = e.clientY
+
+        if (this.selectedTool === "pencil") {
+
+            this.pencilPath = [{
+                x: this.startX,
+                y: this.startY
+            }];
+        }
     }
     mouseUpHandler = (e: MouseEvent) => {
         this.clicked = false
@@ -161,7 +182,11 @@ export class Draw {
                 endX: e.clientX,
                 endY: e.clientY
             }
-
+        } else if (selectedTool === "pencil") {
+            shape = {
+                type: "pencil",
+                path: this.pencilPath
+            }
         }
 
         if (!shape) {
@@ -218,6 +243,34 @@ export class Draw {
 
                 this.drawArrowHead(this.startX, this.startY, e.clientX, e.clientY)
 
+            } else if (selectedTool === "pencil") {
+                // store points and draw a continuous line
+                this.pencilPath.push({
+                    x: e.clientX,
+                    y: e.clientY
+                });
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.pencilPath[0].x, this.pencilPath[0].y);
+
+                this.pencilPath.forEach((point, index) => {
+                    if (index > 0) {
+                        this.ctx.lineTo(point.x, point.y);
+                    }
+                });
+
+                // for (let i = 1; i < this.pencilPath.length; i++) {
+                //     this.ctx.lineTo(this.pencilPath[i].x, this.pencilPath[i].y);
+                // }
+
+                /**
+                 * this id the for loop i conb=vert with forEach as this is simple array!!!
+                     for (let i = 1; i < this.pencilPath.length; i++) {
+                        this.ctx.lineTo(this.pencilPath[i].x, this.pencilPath[i].y);
+                    }
+                 */
+                this.ctx.stroke();
+                this.ctx.closePath();
             }
         }
     }
