@@ -102,7 +102,6 @@ const NavBar = () => {
                     <ul className="flex justify-center space-x-6">
                         <li><a href="#features" className="nav-link">Features</a></li>
                         <li><a href="#how-it-works" className="nav-link">How it works</a></li>
-                        <li><a href="#testimonials" className="nav-link">Testimonials</a></li>
                     </ul>
                 </div>
 
