@@ -5,6 +5,7 @@ import NavBar from '@/components/NavBar';
 import FooterSpotlight from '@/components/FooterSpotlight';
 import CreateRoomDialog from '@/components/CreateRoomDialog';
 import { HoverEffect } from '@/components/ui/card-hover-effect';
+import { BackgroundBeams } from '@/components/ui/background-beams';
 
 const Dashboard = () => {
 
@@ -66,7 +67,7 @@ const Dashboard = () => {
 
 
             </main>
-
+            <BackgroundBeams />
             <FooterSpotlight />
         </div>
     );
