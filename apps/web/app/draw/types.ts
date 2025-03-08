@@ -11,10 +11,7 @@ export type canvasShapes = {
     radius: number;
 } | {
     type: "pencil";
-    startX: number;
-    startY: number;
-    endX: number;
-    endY: number;
+    path: { x: number; y: number }[]; // array of points
 } | {
     type: "line";
     startX: number;
