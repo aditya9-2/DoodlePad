@@ -82,6 +82,12 @@ export class Draw {
                 this.ctx.stroke();
                 this.ctx.closePath();
 
+            } else if (shape.type === "arrow") {
+                this.ctx.moveTo(shape.startX, shape.startY);
+                this.ctx.lineTo(shape.endX, shape.endY);
+                this.ctx.stroke();
+                this.drawArrowHead(shape.startX, shape.startY, shape.endX, shape.endY);
+
             }
         })
 
@@ -89,6 +95,25 @@ export class Draw {
 
     setTool(tool: Tools) {
         this.selectedTool = tool
+    }
+
+    drawArrowHead(startX: number, startY: number, endX: number, endY: number) {
+        const headLength = 10;
+        const angle = Math.atan2(endY - startY, endX - startX);
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(endX, endY);
+        this.ctx.lineTo(
+            endX - headLength * Math.cos(angle - Math.PI / 6),
+            endY - headLength * Math.sin(angle - Math.PI / 6)
+        );
+        this.ctx.moveTo(endX, endY);
+        this.ctx.lineTo(
+            endX - headLength * Math.cos(angle + Math.PI / 6),
+            endY - headLength * Math.sin(angle + Math.PI / 6)
+        );
+        this.ctx.stroke();
+        this.ctx.closePath();
     }
 
     mouseDownHandler = (e: MouseEvent) => {
@@ -128,6 +153,15 @@ export class Draw {
                 endX: e.clientX,
                 endY: e.clientY
             }
+        } else if (selectedTool === "arrow") {
+            shape = {
+                type: "arrow",
+                startX: this.startX,
+                startY: this.startY,
+                endX: e.clientX,
+                endY: e.clientY
+            }
+
         }
 
         if (!shape) {
@@ -176,6 +210,13 @@ export class Draw {
                 this.ctx.lineTo(e.clientX, e.clientY);
                 this.ctx.stroke();
                 this.ctx.closePath();
+
+            } else if (selectedTool === "arrow") {
+                this.ctx.moveTo(this.startX, this.startY);
+                this.ctx.lineTo(e.clientX, e.clientY);
+                this.ctx.stroke();
+
+                this.drawArrowHead(this.startX, this.startY, e.clientX, e.clientY)
 
             }
         }
