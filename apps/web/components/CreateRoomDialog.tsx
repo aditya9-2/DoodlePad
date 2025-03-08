@@ -15,29 +15,61 @@ import { Label } from "@/components/ui/label";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+import { toast, Toaster } from 'sonner';
 
 export default function CreateRoomDialog() {
     const [roomName, setRoomName] = useState("");
     const [description, setDescription] = useState("");
     const [isOpen, setIsOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
 
-        // This is where you'll integrate with your backend API
-        // For now, we'll just simulate room creation by redirecting
-        const mockRoomId = Math.random().toString(36).substr(2, 9);
+        try {
+            const token = localStorage.getItem("authToken");
+            const response = await axios.post(
+                "http://localhost:8000/api/v1/user/room",
+                { name: roomName },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
-        // TODO: Replace with actual API call
-        // const response = await fetch('/api/rooms', {
-        //   method: 'POST',
-        //   body: JSON.stringify({ name: roomName, description }),
-        // });
-        // const data = await response.json();
+            const data = response.data;
+            console.log(data)
 
-        setIsOpen(false);
-        router.push(`/canvas/${mockRoomId}`);
+            if (response.status !== 201) {
+                throw new Error(data.message || "Failed to create room");
+            }
+
+            setIsOpen(false);
+            router.push(`/canvas/${data.roomId}`);
+        } catch (error) {
+            console.error("Error creating room:", error);
+            if (error instanceof Error) {
+                toast.error("Error: " + error.message, {
+                    position: "bottom-right",
+                    duration: 1500,
+                    style: { backgroundColor: "red", color: "white" },
+                });
+            } else {
+                toast.error("an unexpected error occured", {
+                    position: "bottom-right",
+                    duration: 1500,
+                    style: { backgroundColor: "red", color: "white" },
+                });
+            }
+        } finally {
+            setLoading(false);
+        }
+
+
     };
 
     return (
@@ -85,10 +117,13 @@ export default function CreateRoomDialog() {
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="submit">Create Room</Button>
+                        <Button type="submit" disabled={loading}>
+                            {loading ? "Creating..." : "Create Room"}
+                        </Button>
                     </DialogFooter>
                 </form>
             </DialogContent>
+            <Toaster />
         </Dialog>
     );
 }
