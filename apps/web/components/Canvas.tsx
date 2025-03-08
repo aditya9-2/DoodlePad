@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import IconButton from "./IconButton";
-import { Circle, Minus, Pencil, RectangleHorizontalIcon, } from "lucide-react";
+import { Circle, Minus, MoveRight, Pencil, RectangleHorizontalIcon, } from "lucide-react";
 import { Tools } from "@/app/draw/types";
 import { Draw } from "@/app/draw/Draw";
 
@@ -97,6 +97,12 @@ function IconTopBar({ selectedTool, setSelectedTool }: {
                     icon={<Minus />}
                     onClick={() => { setSelectedTool("line") }}
                     isActive={selectedTool === "line"}
+                />
+
+                <IconButton
+                    icon={<MoveRight />}
+                    onClick={() => { setSelectedTool("arrow") }}
+                    isActive={selectedTool === "arrow"}
                 />
             </div>
 
