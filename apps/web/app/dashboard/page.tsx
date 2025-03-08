@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import NavBar from '@/components/NavBar';
 import FooterSpotlight from '@/components/FooterSpotlight';
@@ -7,6 +7,7 @@ import CreateRoomDialog from '@/components/CreateRoomDialog';
 import { HoverEffect } from '@/components/ui/card-hover-effect';
 
 const Dashboard = () => {
+
 
     const canvases = [
         {
@@ -29,9 +30,6 @@ const Dashboard = () => {
         },
     ];
 
-    useEffect(() => {
-        document.title = "Canvas Explorer Vista - Dashboard";
-    }, []);
 
     return (
         <div className="relative overflow-hidden flex flex-col min-h-screen bg-gradient-to-b from-background to-background/90">
@@ -58,6 +56,7 @@ const Dashboard = () => {
                         </div>
 
                         <CreateRoomDialog />
+
                     </motion.div>
                 </section>
 
