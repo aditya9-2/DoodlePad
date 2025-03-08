@@ -15,6 +15,12 @@ export type canvasShapes = {
     startY: number;
     endX: number;
     endY: number;
+} | {
+    type: "line",
+    startX: number;
+    startY: number;
+    endX: number;
+    endY: number;
 }
 
-export type Tools = "circle" | "rect" | "pencil";
+export type Tools = "circle" | "rect" | "pencil" | "line";
