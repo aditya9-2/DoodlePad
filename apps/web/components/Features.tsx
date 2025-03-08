@@ -66,12 +66,10 @@ const Features = () => {
                     <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 dark:text-primary-light text-primary-dark">
                         Features
                     </span>
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-primary">
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-primary ">
                         Everything you need to bring ideas to life
                     </h2>
-                    <p className="text-secondary text-lg max-w-xl mx-auto">
-                        DoodlePad combines powerful tools with simplicity to help teams visualize and communicate effectively.
-                    </p>
+
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
