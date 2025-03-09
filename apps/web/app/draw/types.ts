@@ -25,6 +25,10 @@ export type canvasShapes = {
     endX: number;
     endY: number;
 } | {
-    type: "erase"
+    type: "erase";
+    x: number;
+    y: number;
+    width: number;
+    height: number;
 }
 export type Tools = "circle" | "rect" | "pencil" | "line" | "arrow" | "erase";
