@@ -12,6 +12,7 @@ export class Draw {
     private startY: number = 0;
     private selectedTool: Tools = "circle"
     private pencilPath: { x: number, y: number }[] = [] // Stores all points for freehand drawing
+    // private eraseSize: number = 20;
     socket: WebSocket
 
     constructor(canvas: HTMLCanvasElement, roomId: string, socket: WebSocket) {
@@ -102,8 +103,7 @@ export class Draw {
                 this.ctx.stroke();
                 this.ctx.closePath();
             }
-        })
-
+        });
     }
 
     setTool(tool: Tools) {
