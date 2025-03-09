@@ -104,6 +104,8 @@ function IconTopBar({ selectedTool, setSelectedTool }: {
                     onClick={() => { setSelectedTool("arrow") }}
                     isActive={selectedTool === "arrow"}
                 />
+
+
             </div>
 
         </div>

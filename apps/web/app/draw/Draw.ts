@@ -89,7 +89,7 @@ export class Draw {
                 this.ctx.stroke();
                 this.drawArrowHead(shape.startX, shape.startY, shape.endX, shape.endY);
 
-            } else if (shape.type === "pencil") {
+            } else if (shape.type === "pencil" && shape.path?.length) {
                 this.ctx.moveTo(shape.path[0].x, shape.path[0].y);
                 this.ctx.beginPath();
 
@@ -131,6 +131,7 @@ export class Draw {
 
     mouseDownHandler = (e: MouseEvent) => {
         this.clicked = true
+
         this.startX = e.clientX
         this.startY = e.clientY
 
@@ -141,9 +142,12 @@ export class Draw {
                 y: this.startY
             }];
         }
+
     }
+
     mouseUpHandler = (e: MouseEvent) => {
         this.clicked = false
+
         const width = e.clientX - this.startX;
         const height = e.clientY - this.startY;
 
@@ -258,11 +262,6 @@ export class Draw {
                         this.ctx.lineTo(point.x, point.y);
                     }
                 });
-
-                // for (let i = 1; i < this.pencilPath.length; i++) {
-                //     this.ctx.lineTo(this.pencilPath[i].x, this.pencilPath[i].y);
-                // }
-
                 /**
                  * this id the for loop i conb=vert with forEach as this is simple array!!!
                      for (let i = 1; i < this.pencilPath.length; i++) {
