@@ -95,6 +95,7 @@ const NavBar = () => {
                     <ul className="flex justify-center space-x-6">
                         <li><a href="#features" className="nav-link">Features</a></li>
                         <li><a href="#how-it-works" className="nav-link">How it works</a></li>
+                        {isSignedIn && <li><Link href="/dashboard" className="nav-link">Dashboard</Link></li>}
                     </ul>
                 </div>
 
