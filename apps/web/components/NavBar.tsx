@@ -16,6 +16,7 @@ import {
 const NavBar = () => {
     const [isScrolled, setIsScrolled] = useState(false)
     const [isSignedIn, setIsSignedIn] = useState(false)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
     const router = useRouter()
 
     useEffect(() => {
@@ -23,7 +24,6 @@ const NavBar = () => {
             setIsScrolled(window.scrollY > 20)
         }
 
-        // Check if user is signed in
         const checkAuthStatus = () => {
             const token = localStorage.getItem('authToken')
             setIsSignedIn(!!token)
@@ -36,17 +36,11 @@ const NavBar = () => {
     }, [])
 
     const handleLogout = () => {
-        // Remove the auth token from localStorage
         localStorage.removeItem('authToken')
-
-        // Update state
         setIsSignedIn(false)
-
-        // Redirect to landing page
         router.push('/')
     }
 
-    // User profile component with dropdown
     const UserProfile = () => (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -65,12 +59,10 @@ const NavBar = () => {
         </DropdownMenu>
     )
 
-    // Auth buttons or user profile based on sign-in status
     const AuthSection = () => {
         if (isSignedIn) {
             return <UserProfile />
         }
-
         return (
             <div className="hidden md:flex items-center gap-3">
                 <Button variant="outline" className="rounded-full px-5" asChild>
@@ -98,6 +90,7 @@ const NavBar = () => {
                     </Link>
                 </div>
 
+                {/* Desktop Nav */}
                 <div className="flex-1 max-w-md mx-auto hidden md:block">
                     <ul className="flex justify-center space-x-6">
                         <li><a href="#features" className="nav-link">Features</a></li>
@@ -105,16 +98,43 @@ const NavBar = () => {
                     </ul>
                 </div>
 
+                {/* Right Section */}
                 <div className="flex items-center gap-4">
                     <ThemeToggle />
                     <AuthSection />
-                    <Button variant="ghost" size="icon" className="md:hidden">
+
+                    {/* Hamburger Button */}
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="md:hidden"
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    >
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </Button>
                 </div>
             </div>
+
+            {/* Mobile Menu */}
+            {isMenuOpen && (
+                <div className="md:hidden absolute top-16 left-0 w-full bg-background shadow-md p-4">
+                    <ul className="flex flex-col space-y-4">
+                        <li><a href="#features" className="nav-link" onClick={() => setIsMenuOpen(false)}>Features</a></li>
+                        <li><a href="#how-it-works" className="nav-link" onClick={() => setIsMenuOpen(false)}>How it works</a></li>
+                        {!isSignedIn && (
+                            <div className='flex flex-col gap-6 justify-center '>
+                                <Button className='w-32'><Link href="/signin" onClick={() => setIsMenuOpen(false)}>Sign In</Link></Button>
+                                <Button className='w-32'><Link href="/signup" onClick={() => setIsMenuOpen(false)}>Sign Up</Link></Button>
+                            </div>
+                        )}
+                        {isSignedIn && (
+                            <li className="text-red-500 cursor-pointer" onClick={() => { handleLogout(); setIsMenuOpen(false); }}>Logout</li>
+                        )}
+                    </ul>
+                </div>
+            )}
         </nav>
     )
 }
