@@ -5,15 +5,17 @@ import room from "../controllers/room.controller";
 import userAuth from "../middleware/authMiddleware";
 import slug from "../controllers/slug.controller";
 import allRooms from "../controllers/allRooms.controller";
+import me from "../controllers/me.controller";
 
 
 
 const router: Router = express.Router();
 router.post("/signup", signup);
 router.post("/signin", signin);
+router.get("/me", userAuth, me);
 router.post("/room", userAuth, room);
-router.get("/all-rooms", userAuth, allRooms)
-router.get("/room/:slug", slug)
+router.get("/all-rooms", userAuth, allRooms);
+router.get("/room/:slug", slug);
 
 
 
