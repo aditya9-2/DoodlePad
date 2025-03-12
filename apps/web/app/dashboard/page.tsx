@@ -13,12 +13,22 @@ import axios from 'axios';
 import { Skeleton } from "@/components/ui/skeleton"
 import { useState } from 'react';
 
+interface Canvas {
+    id: string;
+    title: string;
+    description: string;
+    link: string;
+}
+
 const Dashboard = () => {
 
     const [loading, setLoading] = useState(true);
     const [name, setName] = useState("");
+    const [canvas, setCanvasesState] = useState<Canvas[]>([]);
+
     const canvases = useCanvasStore((state) => state.canvases);
     const setCanvases = useCanvasStore((state) => state.setCanvases);
+
     useEffect(() => {
 
         const getName = async () => {
@@ -57,7 +67,10 @@ const Dashboard = () => {
                     description: room.slug,
                     link: `/canvas/${room.id}`,
                 }));
+
                 setCanvases(rooms);
+                setCanvasesState(rooms);
+                console.log(`canvases: ${canvas} and length: ${canvas.length}`)
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching rooms:", error);
@@ -67,7 +80,7 @@ const Dashboard = () => {
 
         getName();
         fetchCanvases();
-    }, [setCanvases]);
+    }, [setCanvases, setCanvasesState, canvas]);
 
 
     return (
@@ -104,7 +117,7 @@ const Dashboard = () => {
                     {loading ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                             {/* Shadcn Skeleton loader */}
-                            {[...Array(3)].map((_, index) => (
+                            {[...Array(canvas.length || 4)].map((_, index) => (
                                 <Skeleton key={index} className="h-48 rounded-lg" />
                             ))}
                         </div>
