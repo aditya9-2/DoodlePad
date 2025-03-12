@@ -14,10 +14,33 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useState } from 'react';
 
 const Dashboard = () => {
+
     const [loading, setLoading] = useState(true);
+    const [name, setName] = useState("");
     const canvases = useCanvasStore((state) => state.canvases);
     const setCanvases = useCanvasStore((state) => state.setCanvases);
     useEffect(() => {
+
+        const getName = async () => {
+
+            const token = localStorage.getItem("authToken");
+            try {
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_HTTP_URL}/api/v1/user/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                const data = response.data;
+                setName(data.message);
+
+            } catch (error) {
+                console.error("Error fetching rooms:", error);
+                setLoading(false);
+            }
+
+        }
+
         const fetchCanvases = async () => {
             const token = localStorage.getItem("authToken");
             try {
@@ -42,6 +65,7 @@ const Dashboard = () => {
             }
         };
 
+        getName();
         fetchCanvases();
     }, [setCanvases]);
 
@@ -63,7 +87,7 @@ const Dashboard = () => {
                                 Your Workspace
                             </div>
                             <h1 className="bg-clip-text text-transparent text-center bg-gradient-to-b from-neutral-900 to-neutral-700 dark:from-neutral-600 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight">
-                                Welcome Back, <span className="text-green-400">Aditya</span>
+                                Welcome Back, <span className="text-green-400">{name.split(" ")[0]}</span>
                             </h1>
                             <p className="text-muted-foreground max-w-lg">
                                 Continue working on your canvases or create something new. Your creativity has no bounds.
