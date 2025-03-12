@@ -1,4 +1,3 @@
-
 import { getExisingCanvas } from "./http";
 import { canvasShapes, Tools } from "./types";
 
@@ -102,9 +101,20 @@ export class Draw {
 
                 this.ctx.stroke();
                 this.ctx.closePath();
+            } else if (shape.type === "erase") {
+                this.ctx.clearRect(shape.x, shape.y, shape.width, shape.height);
             }
         });
+
+        // this.existingShapes.forEach((shape) => {
+        //     if (shape.type === "erase") {
+        //         // Clearing the rectangle area defined by the erase shape
+        //         this.ctx.clearRect(shape.x, shape.y, shape.width, shape.height);
+        //     }
+        // });
     }
+
+
 
     setTool(tool: Tools) {
         this.selectedTool = tool
@@ -191,6 +201,15 @@ export class Draw {
                 type: "pencil",
                 path: this.pencilPath
             }
+        } else if (selectedTool === "erase") {
+
+            shape = {
+                type: "erase",
+                x: this.startX,
+                y: this.startY,
+                width: e.clientX - this.startX,
+                height: e.clientY - this.startY
+            }
         }
 
         if (!shape) {
@@ -270,6 +289,15 @@ export class Draw {
                  */
                 this.ctx.stroke();
                 this.ctx.closePath();
+            } else if (selectedTool === "erase") {
+
+                const eraseWidth = e.clientX - this.startX;
+                const eraseHeight = e.clientY - this.startY;
+                this.ctx.save();
+                this.ctx.strokeStyle = "red"; // Preview border color for erase area
+                this.ctx.setLineDash([5, 3]); // Dashed border style
+                this.ctx.strokeRect(this.startX, this.startY, eraseWidth, eraseHeight);
+                this.ctx.restore();
             }
         }
     }
