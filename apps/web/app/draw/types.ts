@@ -30,5 +30,14 @@ export type canvasShapes = {
     y: number;
     width: number;
     height: number;
+} | {
+
+    type: "text";
+    text: string;
+    x: number;
+    y: number;
+    fontSize?: number;
+    color?: string;
 }
-export type Tools = "circle" | "rect" | "pencil" | "line" | "arrow" | "erase";
+
+export type Tools = "circle" | "rect" | "pencil" | "line" | "arrow" | "erase" | "text";
