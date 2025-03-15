@@ -100,7 +100,7 @@ function IconTopBar({ selectedTool, setSelectedTool }: {
     setSelectedTool: (s: Tools) => void;
 }) {
     return (
-        <div className="w-44 h-14 md:w-96 bg-slate-900 text-white fixed top-3 left-28 md:left-[36rem] rounded-md py-2">
+        <div className="w-auto h-14 px-3 bg-slate-900 text-white fixed top-3 left-28 md:left-[36rem] rounded-md py-2">
             <div className="flex gap-2 items-center justify-center">
                 <IconButton
                     icon={<Circle />}
