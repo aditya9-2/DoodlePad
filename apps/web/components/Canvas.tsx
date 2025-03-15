@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import IconButton from "./IconButton";
-import { Circle, Eraser, Minus, MoveRight, Pencil, RectangleHorizontalIcon, } from "lucide-react";
+import { Circle, Eraser, Minus, MoveRight, Pencil, RectangleHorizontalIcon, Type, } from "lucide-react";
 import { Tools } from "@/app/draw/types";
 import { Draw } from "@/app/draw/Draw";
 
@@ -42,13 +42,25 @@ export function Canvas({
 
             const d = new Draw(canvasRef.current, roomId, socket);
             setDraw(d);
+            d.resizeCanvas(window.innerWidth, window.innerHeight);
+
+            const handleResize = () => {
+                d.resizeCanvas(window.innerWidth, window.innerHeight);
+            };
+
+            window.addEventListener("resize", handleResize);
 
             return () => {
                 d.destroy();
             }
         }
 
-    }, [dimensions, roomId, socket]);
+    }, [roomId, socket]);
+
+    useEffect(() => {
+        draw?.setTool(selectedTool);
+    }, [selectedTool, draw]);
+
 
     useEffect(() => {
         window.addEventListener("resize", updateSize);
@@ -108,6 +120,12 @@ function IconTopBar({ selectedTool, setSelectedTool }: {
                     icon={<Eraser />}
                     onClick={() => { setSelectedTool("erase") }}
                     isActive={selectedTool === "erase"}
+                />
+
+                <IconButton
+                    icon={<Type />}
+                    onClick={() => { setSelectedTool("text") }}
+                    isActive={selectedTool === "text"}
                 />
 
 
