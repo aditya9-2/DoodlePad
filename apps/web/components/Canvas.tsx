@@ -68,6 +68,23 @@ export function Canvas({
         return () => window.removeEventListener("resize", updateSize);
     }, []);
 
+    useEffect(() => {
+        if (!canvasRef.current) return;
+
+
+        switch (selectedTool) {
+            case "text":
+                canvasRef.current.style.cursor = "text";
+                break;
+            case "erase":
+                canvasRef.current.style.cursor = `pointer`;
+                console.log("Cursor set to:", canvasRef.current.style.cursor);
+                break;
+            default:
+                canvasRef.current.style.cursor = "crosshair";
+        }
+    }, [selectedTool]);
+
 
     return (
         <>
@@ -127,11 +144,7 @@ function IconTopBar({ selectedTool, setSelectedTool }: {
                     onClick={() => { setSelectedTool("text") }}
                     isActive={selectedTool === "text"}
                 />
-
-
-
             </div>
-
         </div>
 
     )
