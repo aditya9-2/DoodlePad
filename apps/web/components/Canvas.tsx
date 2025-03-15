@@ -58,11 +58,6 @@ export function Canvas({
     }, [roomId, socket]);
 
     useEffect(() => {
-        draw?.setTool(selectedTool);
-    }, [selectedTool, draw]);
-
-
-    useEffect(() => {
         window.addEventListener("resize", updateSize);
 
         return () => window.removeEventListener("resize", updateSize);
