@@ -47,4 +47,4 @@ export type canvasShapes = {
     color?: string;
 }
 
-export type Tools = "circle" | "rect" | "pencil" | "line" | "arrow" | "erase" | "text" | "select";
+export type Tools = "circle" | "rect" | "pencil" | "line" | "arrow" | "erase" | "text";
