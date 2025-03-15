@@ -80,12 +80,10 @@ wss.on('connection', function connection(ws, req) {
                 const roomId = parsedData.roomId;
                 const shapeIds: string[] = parsedData.shapeIds;
 
-                // Guard clause: if no shape IDs provided, do nothing
                 if (!shapeIds || shapeIds.length === 0) {
                     return;
                 }
 
-                // Fetch all chat messages for the room
                 const messages = await prismaClient.chat.findMany({
                     where: {
                         roomId: Number(roomId),
@@ -104,7 +102,6 @@ wss.on('connection', function connection(ws, req) {
                     })
                     .map((msg) => msg.id);
 
-                // Delete the identified messages
                 await prismaClient.chat.deleteMany({
                     where: {
                         id: {
@@ -131,7 +128,7 @@ wss.on('connection', function connection(ws, req) {
                 const roomId = parsedData.roomId;
                 const message = parsedData.message;
 
-                const response = await prismaClient.chat.create({
+                await prismaClient.chat.create({
                     data: {
                         userId,
                         roomId: Number(roomId),
