@@ -51,10 +51,6 @@ wss.on('connection', function connection(ws, req) {
         ws
     });
 
-    // if (!existingUser) {
-
-    // }
-
 
     ws.on('message', async function message(data: string | Buffer) {
         // console.log(data)
@@ -77,6 +73,57 @@ wss.on('connection', function connection(ws, req) {
                 if (!findUser) return;
 
                 findUser.rooms = findUser.rooms.filter(roomId => roomId !== parsedData.roomId);
+            }
+
+            //delete 
+            if (parsedData.type === "delete_shapes") {
+                const roomId = parsedData.roomId;
+                const shapeIds: string[] = parsedData.shapeIds;
+
+                // Guard clause: if no shape IDs provided, do nothing
+                if (!shapeIds || shapeIds.length === 0) {
+                    return;
+                }
+
+                // Fetch all chat messages for the room
+                const messages = await prismaClient.chat.findMany({
+                    where: {
+                        roomId: Number(roomId),
+                    },
+                });
+
+                // Find messages to delete by parsing the message field
+                const messageIdsToDelete = messages
+                    .filter((msg) => {
+                        try {
+                            const parsed = JSON.parse(msg.message);
+                            return parsed.shape && parsed.shape.id && shapeIds.includes(parsed.shape.id);
+                        } catch (e) {
+                            return false; // Skip invalid JSON messages
+                        }
+                    })
+                    .map((msg) => msg.id);
+
+                // Delete the identified messages
+                await prismaClient.chat.deleteMany({
+                    where: {
+                        id: {
+                            in: messageIdsToDelete,
+                        },
+                    },
+                });
+
+                // Broadcast the deletion event to all connected clients in the same room
+                users.forEach((user) => {
+                    if (user.rooms.includes(roomId)) {
+                        user.ws.send(JSON.stringify({
+                            type: "delete_shapes",
+                            roomId,
+                            shapeIds,
+                        }));
+                    }
+                });
+                return;
             }
 
             // chat
