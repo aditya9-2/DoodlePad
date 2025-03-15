@@ -7,16 +7,20 @@ import axios from "axios";
 import Button from "./Button";
 import PrimaryInput from "./PrimaryInput";
 import { toast, Toaster } from "sonner";
+import { useAuthStore } from "@/store/atoms/authStore";
 
 interface AuthProp {
     isSignin: boolean;
 }
 
 const AuthPage = ({ isSignin }: AuthProp) => {
+    const { setLoading } = useAuthStore();
+
     const [username, setUsername] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+
     const router = useRouter();
 
     const handleSubmit = async () => {
@@ -32,6 +36,8 @@ const AuthPage = ({ isSignin }: AuthProp) => {
             }, 1300);
             return;
         }
+
+        setLoading(true);
 
         try {
             const url = `${process.env.NEXT_PUBLIC_HTTP_URL}/api/v1/user/${isSignin ? "signin" : "signup"}`;
@@ -62,6 +68,8 @@ const AuthPage = ({ isSignin }: AuthProp) => {
 
             console.error("Caught error: ", err);
             setError("Failed to authenticate. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
