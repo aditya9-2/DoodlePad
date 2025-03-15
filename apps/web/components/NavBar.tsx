@@ -19,7 +19,6 @@ const NavBar = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isSignedIn, setIsSignedIn] = useState(false)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const [progress, setProgress] = useState(0);
     const router = useRouter()
 
     useEffect(() => {
@@ -46,24 +45,7 @@ const NavBar = () => {
 
     const handleNavigation = (path: string) => {
         setIsLoading(true)
-        setProgress(10); // Start progress
-
-        const interval = setInterval(() => {
-            setProgress((prev) => (prev < 90 ? prev + 20 : prev)); // Simulate loading
-        }, 200);
-
         router.push(path);
-
-        setTimeout(() => {
-            setProgress(100);
-            setTimeout(() => {
-                setIsLoading(false);
-                setProgress(0);
-            }, 500);
-        }, 1000);
-
-        return () => clearInterval(interval);
-
     }
 
     const UserProfile = () => (
@@ -107,7 +89,7 @@ const NavBar = () => {
         <>
             {isLoading && (
                 <div className="fixed top-0 left-0 w-full z-50">
-                    <Progress value={progress} className="h-[0.5px] bg-primary" />
+                    <Progress value={100} className="h-[0.5px] bg-primary" />
                 </div>
             )}
             <nav className={cn(

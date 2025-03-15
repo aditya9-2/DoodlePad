@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { useState } from "react";
+import { Progress } from "./progress";
 
 export const HoverEffect = ({
     items,
@@ -15,6 +16,16 @@ export const HoverEffect = ({
     className?: string;
 }) => {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleClick = async (link: string) => {
+        setLoading(true);
+        // Simulate navigation delay or fetch if needed
+        setTimeout(() => {
+            setLoading(false);
+            window.location.href = link; // Navigating manually to simulate full page load
+        }, 1500); // Adjust time based on actual loading duration
+    };
 
     return (
         <div
@@ -23,6 +34,11 @@ export const HoverEffect = ({
                 className
             )}
         >
+            {loading && (
+                <div className="fixed top-0 left-0 w-full z-50">
+                    <Progress value={100} className="h-[0.5px] bg-primary animate-pulse" />
+                </div>
+            )}
             {items.map((item, idx) => (
                 <Link
                     href={item?.link}
@@ -30,6 +46,11 @@ export const HoverEffect = ({
                     className="relative group  block p-2 h-full w-full"
                     onMouseEnter={() => setHoveredIndex(idx)}
                     onMouseLeave={() => setHoveredIndex(null)}
+                    onClick={(e) => {
+                        e.preventDefault(); // Prevent default Link navigation
+                        handleClick(item.link); // Use our custom click handler
+                    }}
+
                 >
                     <AnimatePresence>
                         {hoveredIndex === idx && (
