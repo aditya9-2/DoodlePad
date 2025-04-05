@@ -1,0 +1,17 @@
+FROM node:22-alpine
+
+WORKDIR /apps/http-backend
+
+RUN npm install -g pnpm@9.0.0
+
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json turbo.json ./
+
+RUN pnpm install
+
+COPY . .
+
+RUN pnpm build --filter=http-backend
+
+EXPOSE 3000
+
+CMD ["node", "apps/http-backend/dist/index.js"]
