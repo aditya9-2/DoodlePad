@@ -14,6 +14,6 @@ COPY . .
 
 RUN pnpm build --filter=ws-backend
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD ["node", "apps/ws-backend/dist/index.js"]
