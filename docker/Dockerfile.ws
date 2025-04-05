@@ -8,11 +8,11 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json turbo.json ./
 
 RUN pnpm install
 
-RUN pnpm run db:migrate
+RUN pnpm run db:generate
 
 COPY . .
 
-RUN pnpm build --filter=ws-backend
+# RUN pnpm build --filter=ws-backend
 
 EXPOSE 8080
 
