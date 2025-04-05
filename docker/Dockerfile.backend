@@ -8,6 +8,8 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json turbo.json ./
 
 RUN pnpm install
 
+RUN pnpm run db:migrate
+
 COPY . .
 
 RUN pnpm build --filter=http-backend
