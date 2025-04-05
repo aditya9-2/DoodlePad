@@ -14,6 +14,6 @@ COPY . .
 
 # RUN pnpm build --filter=http-backend
 
-EXPOSE 3000
+EXPOSE 8000
 
 CMD ["node", "apps/http-backend/dist/index.js"]
