@@ -24,10 +24,6 @@ const AuthPage = ({ isSignin }: AuthProp) => {
     const router = useRouter();
 
     const handleSubmit = async () => {
-        console.log(`name: ${name}`);
-        console.log(`username: ${username}`);
-        console.log(`password: ${password}`);
-
 
         if (!username || !password || (!isSignin && !name)) {
             setError("All fields are required.");

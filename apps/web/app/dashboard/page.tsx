@@ -70,7 +70,6 @@ const Dashboard = () => {
 
                 setCanvases(rooms);
                 setCanvasesState(rooms);
-                console.log(`canvases: ${canvas} and length: ${canvas.length}`)
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching rooms:", error);

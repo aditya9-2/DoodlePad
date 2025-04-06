@@ -73,7 +73,6 @@ export function Canvas({
                 break;
             case "erase":
                 canvasRef.current.style.cursor = `pointer`;
-                console.log("Cursor set to:", canvasRef.current.style.cursor);
                 break;
             default:
                 canvasRef.current.style.cursor = "crosshair";

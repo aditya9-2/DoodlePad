@@ -9,7 +9,17 @@ export function RoomCanvas({ roomId }: { roomId: string }) {
 
     const [socket, setSocket] = useState<WebSocket | null>(null);
 
+
     useEffect(() => {
+
+        if (!roomId) {
+            toast.error("Room ID is not defined", {
+                position: "bottom-right",
+                duration: 1500,
+                style: { backgroundColor: "red", color: "white" },
+            });
+            return;
+        }
 
         const token = localStorage.getItem("authToken");
 

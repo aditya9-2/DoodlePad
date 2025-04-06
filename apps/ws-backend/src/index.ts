@@ -53,7 +53,7 @@ wss.on('connection', function connection(ws, req) {
 
 
     ws.on('message', async function message(data: string | Buffer) {
-        // console.log(data)
+
         try {
             // Parse the string data into JSON data
             let parsedData = JSON.parse(data.toString());
@@ -92,7 +92,9 @@ wss.on('connection', function connection(ws, req) {
 
                 // Find messages to delete by parsing the message field
                 const messageIdsToDelete = messages
-                    .filter((msg) => {
+                    .filter((msg: {
+                        message: string
+                    }) => {
                         try {
                             const parsed = JSON.parse(msg.message);
                             return parsed.shape && parsed.shape.id && shapeIds.includes(parsed.shape.id);
@@ -100,7 +102,9 @@ wss.on('connection', function connection(ws, req) {
                             return false; // Skip invalid JSON messages
                         }
                     })
-                    .map((msg) => msg.id);
+                    .map((msg: {
+                        id: any;
+                    }) => msg.id);
 
                 await prismaClient.chat.deleteMany({
                     where: {
