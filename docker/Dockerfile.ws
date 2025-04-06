@@ -4,16 +4,15 @@ WORKDIR /apps/ws-backend
 
 RUN npm install -g pnpm@9.0.0
 
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json turbo.json ./
-
+# Copy only package files first
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
+
+# Copy the rest of the app
+COPY . .
 
 RUN pnpm run db:generate
 
-COPY . .
-
-# RUN pnpm build --filter=ws-backend
-
-EXPOSE 8080
+EXPOSE 8000
 
 CMD ["node", "apps/ws-backend/dist/index.js"]

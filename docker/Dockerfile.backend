@@ -4,15 +4,14 @@ WORKDIR /apps/http-backend
 
 RUN npm install -g pnpm@9.0.0
 
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json turbo.json ./
-
+# Copy only package files first
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 
-RUN pnpm run db:generate
-
+# Copy the rest of the app
 COPY . .
 
-# RUN pnpm build --filter=http-backend
+RUN pnpm run db:generate
 
 EXPOSE 8000
 
