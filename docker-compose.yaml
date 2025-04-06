@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD = mypassword
+      - POSTGRES_USER = myuser
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - pgdata:/var/lib/postgresql
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    restart: always
+    container_name: backend-service
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    restart: always
+    container_name: frontend-service
+    ports:
+      - 3000:3000
+    environment:
+      - NEXT_PUBLIC_HTTP_URL=http://backend:8000
+      - NEXT_PUBLIC_SOCKET_URL=http://socket:8080
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
