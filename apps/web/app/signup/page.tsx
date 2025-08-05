@@ -1,3 +1,5 @@
+"use client";
+
 import Authpage from "@/components/Authpage";
 import FooterSpotlight from "@/components/FooterSpotlight";
 import NavBar from "@/components/NavBar";
