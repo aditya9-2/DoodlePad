@@ -1,0 +1,18 @@
+FROM node:20-alpine
+
+RUN npm install -g pnpm
+
+
+WORKDIR /app
+
+COPY . /app
+
+RUN pnpm install
+
+RUN pnpm run db:generate
+
+RUN pnpm exec turbo run build --filter=http-backend...
+
+EXPOSE 8000
+
+CMD ["pnpm", "--filter", "http-backend", "start"]

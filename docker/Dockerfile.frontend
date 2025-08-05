@@ -1,0 +1,23 @@
+FROM node:20-alpine
+
+RUN npm install -g pnpm
+
+
+WORKDIR /app
+
+COPY . .
+
+RUN pnpm install
+
+RUN pnpm run db:generate
+
+ARG NEXT_PUBLIC_HTTP_URL
+ARG NEXT_PUBLIC_SOCKET_URL
+
+ENV NEXT_PUBLIC_HTTP_URL=$NEXT_PUBLIC_HTTP_URL
+ENV NEXT_PUBLIC_SOCKET_URL=$NEXT_PUBLIC_SOCKET_URL
+
+
+EXPOSE 3000
+
+CMD ["pnpm", "run", "start:web"]
