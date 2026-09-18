@@ -1,9 +1,9 @@
 import { prismaClient } from "@repo/db/prisma";
 import { Request, Response } from "express"
 
+const HISTORY_LIMIT = 500; // tune this based on typical room size
 
 const chatHistory = async (req: Request, res: Response) => {
-
     try {
         const roomId = Number(req.params.roomId);
 
@@ -15,16 +15,13 @@ const chatHistory = async (req: Request, res: Response) => {
         }
 
         const messages = await prismaClient.chat.findMany({
-            where: {
-                roomId
-            },
-            orderBy: {
-                id: "desc"
-            },
+            where: { roomId },
+            orderBy: { id: "desc" },
+            take: HISTORY_LIMIT,
         });
 
         res.status(200).json({
-            messages
+            messages: messages.reverse(),
         });
 
     } catch (err) {
@@ -34,8 +31,6 @@ const chatHistory = async (req: Request, res: Response) => {
             err: error.message
         });
     }
-
-
 }
 
 export default chatHistory
